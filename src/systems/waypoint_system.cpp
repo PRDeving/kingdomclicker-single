@@ -6,7 +6,21 @@ namespace Systems {
 
         registry.view<Components::Selectable, Components::Position, Components::Velocity, Components::Rotation, Components::MovementPath>().each(
             [&input, &cursor, &deltatime](auto& selectable, auto& position, auto& velocity, auto& rotation, auto& movement_path) {
-                if (selectable.selected && (input.mouse.pressed & MOUSE_RIGHT)) movement_path.path.push_back(cursor);
+                if (
+                    selectable.selected
+                    && (input.mouse.pressed & MOUSE_RIGHT)
+                    && (movement_path.path.size() && !(input.keyboard.down & KEY_SHIFT))
+                ) movement_path.path.clear();
+
+                if (
+                    selectable.selected
+                    && (input.mouse.pressed & MOUSE_RIGHT)
+                    && (
+                        movement_path.path.size() == 0
+                        || (input.keyboard.down & KEY_SHIFT)
+                    )
+                ) movement_path.path.push_back(cursor);
+
                 if (movement_path.path.empty()) return;
 
                 auto next = movement_path.path.front();

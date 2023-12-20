@@ -30,10 +30,12 @@ int main() {
         Systems::cameraUpdate(registry, camera, input, deltatime);
         Vector2 cursor = GetScreenToWorld2D(input.mouse.cursor, camera);
 
-        Systems::SelectionSystem(registry, input, cursor);
+        Systems::SelectionSystem(registry, input, camera);
         Systems::WaypointSystem(registry, input, cursor, deltatime);
         Systems::MovementSystem(registry, deltatime);
         Systems::render(registry);
+
+        if (input.mouse.rect.width) DrawRectangleLinesEx(input.mouse.rect, 2, ORANGE);
 
     }, (1000/60), NULL);
 
