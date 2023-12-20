@@ -1,0 +1,6 @@
+[submodule "external/entt"]
+	path = external/entt
+	url = git@github.com:skypjack/entt.git
+[submodule "external/raylib"]
+	path = external/raylib
+	url = git@github.com:raysan5/raylib.git
