@@ -1,24 +1,46 @@
 #pragma once
 #include <raylib.h>
+#include <vector>
+
+struct Mouse {
+    Vector2 cursor;
+    char pressed;
+    char down;
+};
 
 struct Input {
-    Vector2 mouse;
+    Mouse mouse;
 };
 
 namespace Components {
 
-    struct Camera : Camera2D {};
+    struct Camera {};
 
     struct Position {
         float x;
         float y;
     };
 
+    struct Rotation {
+        float radians;
+    };
+
+    struct Velocity {
+        float dx;
+        float dy;
+        float speed;
+    };
+
+    struct Selectable {
+        bool selected = false;
+    };
+
     struct Collider {
         float radius;
     };
 
-    struct Sprite {
+    struct MovementPath {
+        std::vector<Vector2> path;
     };
 
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <raylib.h>
 
 namespace Engine {
     namespace Render {
