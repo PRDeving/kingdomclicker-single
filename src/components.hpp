@@ -16,10 +16,7 @@ namespace Components {
 
     struct Camera {};
 
-    struct Position {
-        float x;
-        float y;
-    };
+    struct Position : Vector2 { };
 
     struct Rotation {
         float radians;
@@ -40,7 +37,8 @@ namespace Components {
     };
 
     struct MovementPath {
-        std::vector<Vector2> path;
+        std::vector<Vector2> waypoints;
+        entt::entity leader;
     };
 
 }

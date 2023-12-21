@@ -1,6 +1,5 @@
 #include <chrono>
 #include "engine.hpp"
-#include "render.hpp"
 
 namespace Engine {
     bool isRunning() {
@@ -9,6 +8,7 @@ namespace Engine {
 
     void init(const char* title) {
         Engine::Render::init(800, 600, title);
+        Engine::Random::seed(0);
     }
 
     void close() {

@@ -1,12 +1,16 @@
 #include <iostream>
 #include <entt/entt.hpp>
 #include <cmath>
+#include <chrono>
 #include <raylib.h>
+#include <random>
 
 #include <engine/engine.hpp>
 #include "components.hpp"
 #include "systems/systems.hpp"
 #include "assamblages/assamblages.hpp"
+
+unsigned long int seed = 0;
 
 int main() {
     Engine::init("Kingdom Clicker");
@@ -31,7 +35,8 @@ int main() {
         Vector2 cursor = GetScreenToWorld2D(input.mouse.cursor, camera);
 
         Systems::SelectionSystem(registry, input, camera);
-        Systems::WaypointSystem(registry, input, cursor, deltatime);
+        Systems::WaypointSystem(registry, input, cursor);
+        Systems::PathfindingSystem(registry, deltatime);
         Systems::MovementSystem(registry, deltatime);
         Systems::render(registry);
 

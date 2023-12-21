@@ -1,6 +1,8 @@
 #pragma once
+#include <raylib.h>
 #include "render.hpp"
 #include "input.hpp"
+#include "random.hpp"
 
 namespace Engine {
     bool isRunning();
@@ -8,3 +10,11 @@ namespace Engine {
     void close();
     void loop(std::function<void(float)> frame, const float interval, bool* interrupt);
 }
+
+Vector2 operator-(const Vector2& a, const float b);
+Vector2 operator/(const Vector2& a, const float b);
+Vector2 operator*(const Vector2& a, const float b);
+
+Vector2 operator-(const Vector2& a, const Vector2& b);
+Vector2 operator/(const Vector2& a, const Vector2& b);
+Vector2 operator*(const Vector2& a, const Vector2& b);
