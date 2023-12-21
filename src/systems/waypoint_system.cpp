@@ -4,15 +4,16 @@
 namespace Systems {
 
     void WaypointSystem(entt::registry& registry, Engine::Input::Input& input, Vector2& cursor) {
+        if (!(input.mouse.pressed & MOUSE_RIGHT)) return;
+
+        auto view = registry.view<Components::MovementPath>();
         std::vector<entt::entity> selected;
-        registry.view<Components::Selectable, Components::MovementPath>().each([&selected](auto entity, auto& selectable, auto& movement_path) {
+        registry.view<Components::Selectable>().each([&registry, &view, &selected](auto entity, auto& selectable) {
             if (selectable.selected) selected.push_back(entity);
+            if (!view.contains(entity)) registry.emplace<Components::MovementPath>(entity);
         });
 
-        if (
-            selected.size()
-            && (input.mouse.pressed & MOUSE_RIGHT)
-        ) {
+        if (selected.size()) {
             auto view = registry.view<Components::MovementPath, Components::Position>();
             entt::entity leader = selected.front();
             auto& l_movement_path = view.get<Components::MovementPath>(leader);

@@ -8,7 +8,6 @@ namespace Assamblages {
         registry.emplace<Components::Rotation>(e);
         registry.emplace<Components::Collider>(e, 10.0f);
         registry.emplace<Components::Selectable>(e);
-        registry.emplace<Components::MovementPath>(e);
         return e;
     }
 }

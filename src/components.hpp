@@ -38,6 +38,7 @@ namespace Components {
 
     struct MovementPath {
         std::vector<Vector2> waypoints;
+        std::vector<Vector2> path;
         entt::entity leader;
     };
 
