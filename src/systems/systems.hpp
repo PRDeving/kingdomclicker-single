@@ -13,12 +13,11 @@ namespace Systems {
 
     void PathfindingSystem(entt::registry& registry, float deltatime);
     void MovementSystem(entt::registry& registry, float deltatime);
-    void CollisionSystem(entt::registry& registry);
+    void CollisionSystem(entt::registry& registry, float deltatime);
 
     void CollectionSystem(entt::registry& registry);
 
     // TASK SYSTEMS
     void TaskQueueSystem(entt::registry& registry);
     void MoveTaskSystem(entt::registry& registry, float deltatime);
-    void FollowTaskSystem(entt::registry& registry);
 }

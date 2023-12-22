@@ -22,7 +22,7 @@ namespace Systems {
             BeginMode2D(camera);
 
             auto selected = registry.view<Components::Selected>();
-            auto collecting = registry.view<Components::Collecting>();
+            auto collecting = registry.view<Components::TaskCollectFromTarget>();
             registry.view<Components::Unit, Components::Position>().each([&selected, &collecting](auto entity, auto& position) {
                 DrawRectangle(position.x - 5, position.y - 5, 10, 10, selected.contains(entity) ? RED : LIGHTGRAY);
                 if (collecting.contains(entity)) DrawText("collecting", position.x - 20, position.y - 20, 10, BLACK);

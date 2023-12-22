@@ -6,8 +6,13 @@ enum ITEM {
 
 enum ACTION {
     MOVE,
-    FOLLOW,
+    MOVE_TO_TARGET,
     COLLECT,
+};
+
+enum LAYER {
+    PLAYER =     0x01,
+    RESOURCES =  0x02,
 };
 
 struct Task {

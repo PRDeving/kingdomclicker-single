@@ -13,6 +13,7 @@
 /*
  * TODO
  *
+ * (SOLVED?)
  * - Crash if rclick + shift mixing units from 2 different groups
  *   reproduce:
  *      - group A, set move tasks queue with shift
@@ -27,8 +28,8 @@ unsigned long int seed = 0;
 
 void fixedUpdate(entt::registry& registry, float deltatime) {
     Systems::PathfindingSystem(registry, deltatime);
+    Systems::CollisionSystem(registry, deltatime);
     Systems::MovementSystem(registry, deltatime);
-    Systems::CollisionSystem(registry);
 }
 
 int main() {
@@ -44,7 +45,7 @@ int main() {
 
     entt::entity tree = registry.create();
     registry.emplace<Components::Position>(tree, 100.0f, 100.0f);
-    registry.emplace<Components::CircleCollider>(tree, 13.0f);
+    registry.emplace<Components::CircleCollider>(tree, 6.0f, LAYER::RESOURCES);
     registry.emplace<Components::Resource>(tree, ITEM::WOOD);
     registry.emplace<Components::Storage>(tree, 100u, 100u);
 
@@ -62,29 +63,42 @@ int main() {
 
         Systems::HoverSystem(registry, input, camera);
         Systems::SelectionSystem(registry, input);
-        Systems::TaskQueueSystem(registry);
-        
-        if (input.mouse.pressed & MOUSE_RIGHT) {
-            auto entities = registry.view<Components::Selected, Components::TaskQueue>();
-             entt::entity leader = *entities.begin();
-
-             for (auto entity : entities) {
-                 auto& tasks = registry.get<Components::TaskQueue>(entity);
-                 if (!input.keyboard.down & KEY_SHIFT) {
-                     tasks.clear();
-                     registry.remove<Components::TaskMoveTo>(entity);
-                     registry.remove<Components::TaskFollow>(entity);
-                 }
-
-                 if (entity == leader) tasks.push_back(Task{ ACTION::MOVE, cursor });
-                 else tasks.push_back(Task{ ACTION::FOLLOW, target: leader });
-             }
-        }
-
-        Systems::MoveTaskSystem(registry, deltatime);
-        Systems::FollowTaskSystem(registry);
 
         fixedUpdate(registry, 16.0f);
+        
+        if (input.mouse.pressed & MOUSE_RIGHT) {
+            auto resourceHovered = registry.view<Components::Hovered, Components::Resource>();
+            bool clicksResource = (resourceHovered.begin() != resourceHovered.end());
+
+            auto entities = registry.view<Components::Selected, Components::TaskQueue>();
+            entt::entity leader = *entities.begin();
+            entt::entity resource = *resourceHovered.begin();
+
+            for (auto entity : entities) {
+                auto& tasks = registry.get<Components::TaskQueue>(entity);
+                if (!input.keyboard.down & KEY_SHIFT) {
+                    tasks.clear();
+                    registry.remove<
+                        Components::TaskMoveTo,
+                        Components::TaskMoveToTarget,
+                        Components::TaskCollectFromTarget,
+                        Components::Waypoints
+                    >(entity);
+
+                }
+
+                if (!clicksResource) {
+                    auto location = cursor - (entity == leader ? Vector2{} : Vector2{ Engine::Random::range(-50.0f, 50.0f), Engine::Random::range(-50.0f, 50.0f) });
+                    tasks.push_back(Task{ ACTION::MOVE, location });
+                } else {
+                    tasks.push_back(Task{ ACTION::MOVE_TO_TARGET, target: resource });
+                    tasks.push_back(Task{ ACTION::COLLECT, target: resource });
+                }
+            }
+        }
+
+        Systems::TaskQueueSystem(registry);
+        Systems::MoveTaskSystem(registry, deltatime);
 
         Systems::render(registry);
         if (input.mouse.rect.width) DrawRectangleLinesEx(input.mouse.rect, 2, ORANGE);

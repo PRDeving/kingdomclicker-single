@@ -20,13 +20,11 @@ namespace Components {
 
     typedef std::vector<Task> TaskQueue;
     struct TaskMoveTo : Vector2 { };
-    struct TaskFollow {
+    struct TaskMoveToTarget {
         entt::entity target;
     };
     struct TaskCollectFromTarget {
         entt::entity target;
     };
-
-    struct Collecting { };
 
 }

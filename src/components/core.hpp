@@ -18,6 +18,8 @@ namespace Components {
     // COLLISION RELATED
     struct CircleCollider {
         float radius;
+        char layer;
+        char collisionMask;
     };
     typedef std::vector<entt::entity> Collision;
 
