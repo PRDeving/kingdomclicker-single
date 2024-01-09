@@ -75,7 +75,7 @@ int main() {
 
         fixedUpdate(registry, 16.0f);
         
-        if (input.mouse.pressed & MOUSE_RIGHT) {
+        if (input.mouse.pressed & (char)Engine::Input::Button::RIGHT) {
             auto resourceHovered = registry.view<Components::Hovered, Components::Resource>();
             bool clicksResource = (resourceHovered.begin() != resourceHovered.end());
 
@@ -85,7 +85,7 @@ int main() {
 
             for (auto entity : entities) {
                 auto& tasks = registry.get<Components::TaskQueue>(entity);
-                if (!input.keyboard.down & KEY_SHIFT) {
+                if (!input.keyboard.down & (char)Engine::Input::Key::SHIFT) {
                     tasks.clear();
                     registry.remove<
                         Components::TaskMoveTo,

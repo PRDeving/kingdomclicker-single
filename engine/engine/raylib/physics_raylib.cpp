@@ -1,6 +1,8 @@
-#include "physics.hpp"
+#ifdef RAYLIB
+#include "../physics.hpp"
+
 #include <raylib.h>
-#include "circle.hpp"
+#include "../circle.hpp"
 
 namespace Engine {
     namespace Physics {
@@ -12,3 +14,4 @@ namespace Engine {
         }
     }
 }
+#endif

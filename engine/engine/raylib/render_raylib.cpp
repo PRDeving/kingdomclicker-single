@@ -1,9 +1,11 @@
+#ifdef RAYLIB
+#include "../render.hpp"
+
 #include <functional>
 #include <sstream>
 #include <raylib.h>
-#include "vector2.hpp"
-#include "rectangle.hpp"
-#include "render.hpp"
+#include "../vector2.hpp"
+#include "../rectangle.hpp"
 
 ::Color toRaylib(Engine::Color color) {
     ::Color ret;
@@ -68,3 +70,4 @@ namespace Engine {
         }
     }
 }
+#endif

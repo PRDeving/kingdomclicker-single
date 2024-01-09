@@ -1,6 +1,9 @@
+#ifdef RAYLIB
+
+#include "../camera.hpp"
+
 #include <raylib.h>
-#include "camera.hpp"
-#include "vector2.hpp"
+#include "../vector2.hpp"
 
 namespace Engine {
     namespace Camera {
@@ -10,3 +13,5 @@ namespace Engine {
         }
     }
 }
+
+#endif

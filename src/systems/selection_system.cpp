@@ -4,7 +4,7 @@
 namespace Systems {
 
     void SelectionSystem(entt::registry& registry, Engine::Input::Input& input) {
-        bool action = (input.mouse.pressed & MOUSE_LEFT || input.mouse.rect.size.x);
+        bool action = (input.mouse.pressed & (char)Engine::Input::Button::LEFT || input.mouse.rect.size.x);
         if (!action) return;
 
         auto view = registry.view<Components::Selected>();
@@ -16,7 +16,7 @@ namespace Systems {
 
             bool selected = (
                 action
-                && (isHovered || ((input.keyboard.down & KEY_SHIFT) && isSelected))
+                && (isHovered || ((input.keyboard.down & (char)Engine::Input::Key::SHIFT) && isSelected))
             );
 
             if (selected) registry.emplace_or_replace<Components::Selected>(entity);
