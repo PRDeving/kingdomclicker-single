@@ -2,13 +2,22 @@
 #include <entt/entt.hpp>
 #include <cmath>
 #include <chrono>
-#include <raylib.h>
 #include <random>
 
 #include <engine/engine.hpp>
 #include "components/components.hpp"
-#include "systems/systems.hpp"
 #include "assamblages/assamblages.hpp"
+
+#include "systems/render.hpp"
+#include "systems/camera_update.hpp"
+#include "systems/hover.hpp"
+#include "systems/selection.hpp"
+#include "systems/pathfinding.hpp"
+#include "systems/movement.hpp"
+#include "systems/collision.hpp"
+
+#include "systems/tasks/queue.hpp"
+#include "systems/tasks/move.hpp"
 
 /*
  * TODO
@@ -33,7 +42,7 @@ void fixedUpdate(entt::registry& registry, float deltatime) {
 }
 
 int main() {
-    Engine::init("Kingdom Clicker");
+    Engine::init("Raid");
 
     entt::registry registry;
     registry.ctx().emplace<Engine::Input::Input>();

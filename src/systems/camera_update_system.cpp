@@ -1,5 +1,7 @@
-#include <raylib.h>
-#include "systems.hpp"
+#include "camera_update.hpp"
+#include <entt/entt.hpp>
+#include <engine/engine.hpp>
+#include "../components/components.hpp"
 
 namespace Systems {
     void cameraUpdate(entt::registry &registry, Camera2D& camera, Engine::Input::Input& input, float deltatime) {

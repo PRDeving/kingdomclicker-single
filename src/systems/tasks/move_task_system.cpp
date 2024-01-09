@@ -1,5 +1,7 @@
-#include "../systems.hpp"
+#include "./move.hpp"
 #include <algorithm>
+#include <entt/entt.hpp>
+#include "../../components/components.hpp"
 
 namespace Systems {
 

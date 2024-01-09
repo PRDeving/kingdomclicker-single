@@ -1,4 +1,7 @@
-#include "systems.hpp"
+#include "pathfinding.hpp"
+#include <entt/entt.hpp>
+#include <engine/engine.hpp>
+#include "../components/components.hpp"
 
 namespace Systems {
 

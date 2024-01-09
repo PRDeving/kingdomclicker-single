@@ -1,4 +1,4 @@
 file(GLOB_RECURSE SOURCES "*.cpp")
 
-add_executable(kingdomclicker ${SOURCES})
-target_link_libraries(kingdomclicker engine ${EXTRA_LIBS})
+add_executable(raid ${SOURCES})
+target_link_libraries(raid engine ${EXTRA_LIBS})

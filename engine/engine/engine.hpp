@@ -3,6 +3,9 @@
 #include "render.hpp"
 #include "input.hpp"
 #include "random.hpp"
+#include "physics.hpp"
+
+typedef Vector2 Vector2;
 
 namespace Engine {
     bool isRunning();
