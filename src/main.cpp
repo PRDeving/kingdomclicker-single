@@ -46,7 +46,7 @@ int main() {
 
     entt::registry registry;
     registry.ctx().emplace<Engine::Input::Input>();
-    registry.ctx().emplace<Camera2D>(400.0f, 300.0f);
+    registry.ctx().emplace<Engine::Camera2D>(400.0f, 300.0f);
 
     entt::entity camera_entity = registry.create();
     registry.emplace<Components::Position>(camera_entity, 30.0f, 30.0f);
@@ -63,12 +63,12 @@ int main() {
     }
 
     auto &input = registry.ctx().get<Engine::Input::Input>();
-    auto &camera = registry.ctx().get<Camera2D>();
+    auto &camera = registry.ctx().get<Engine::Camera2D>();
 
     Engine::loop([&registry, &input, &camera](float deltatime) {
         Engine::Input::handle(&input);
         Systems::cameraUpdate(registry, camera, input, deltatime);
-        Vector2 cursor = GetScreenToWorld2D(input.mouse.cursor, camera);
+        Engine::Vector2 cursor = Engine::Camera::screenToWorld(input.mouse.cursor, camera);
 
         Systems::HoverSystem(registry, input, camera);
         Systems::SelectionSystem(registry, input);
@@ -97,7 +97,7 @@ int main() {
                 }
 
                 if (!clicksResource) {
-                    auto location = cursor - (entity == leader ? Vector2{} : Vector2{ Engine::Random::range(-50.0f, 50.0f), Engine::Random::range(-50.0f, 50.0f) });
+                    auto location = cursor - (entity == leader ? Engine::Vector2{} : Engine::Vector2{ Engine::Random::range(-50.0f, 50.0f), Engine::Random::range(-50.0f, 50.0f) });
                     tasks.push_back(Task{ ACTION::MOVE, location });
                 } else {
                     tasks.push_back(Task{ ACTION::MOVE_TO_TARGET, target: resource });
@@ -110,7 +110,7 @@ int main() {
         Systems::MoveTaskSystem(registry, deltatime);
 
         Systems::render(registry);
-        if (input.mouse.rect.width) DrawRectangleLinesEx(input.mouse.rect, 2, ORANGE);
+        if (input.mouse.rect.size.x) Engine::Render::stroke(input.mouse.rect, COLOR_ORANGE);
 
     }, (1000/60), NULL);
 

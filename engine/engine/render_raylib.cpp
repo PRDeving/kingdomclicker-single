@@ -1,7 +1,18 @@
 #include <functional>
 #include <sstream>
 #include <raylib.h>
+#include "vector2.hpp"
+#include "rectangle.hpp"
 #include "render.hpp"
+
+::Color toRaylib(Engine::Color color) {
+    ::Color ret;
+    ret.r = color.r;
+    ret.g = color.g;
+    ret.b = color.b;
+    ret.a = color.a;
+    return ret;
+}
 
 namespace Engine {
     namespace Render {
@@ -30,26 +41,30 @@ namespace Engine {
         }
 
         void projection(Engine::Camera2D& camera, std::function<void()> frame) {
-            BeginMode2D(camera);
+            BeginMode2D((::Camera2D&)camera);
             frame();
             EndMode2D();
         }
 
         void clearBackground(Engine::Color color) {
-            ClearBackground(color);
+            ClearBackground(toRaylib(color));
         }
 
         void text(const char* str, int x, int y, int size, Engine::Color color) {
-            DrawText(str, x, y, size, color);
+            DrawText(str, x, y, size, toRaylib(color));
         }
-        void text(Vector2 vec, int x, int y, int size, Engine::Color color) {
+        void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color) {
             std::ostringstream str;
             str << "x: " << vec.x << " / y: " << vec.y;
-            DrawText(str.str().c_str(), x, y, size, color);
+            DrawText(str.str().c_str(), x, y, size, toRaylib(color));
         }
 
-        void stroke(int x, int y, int w, int h, Engine::Color color) {
-            DrawRectangle(x, y, w, h, color);
+        void stroke(Engine::Rectangle rect, Engine::Color color) {
+            DrawRectangleLines(rect.point.x, rect.point.y, rect.size.x, rect.size.y, toRaylib(color));
+        }
+
+        void draw(int x, int y, int w, int h, Engine::Color color) {
+            DrawRectangle(x, y, w, h, toRaylib(color));
         }
     }
 }

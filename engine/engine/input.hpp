@@ -1,6 +1,6 @@
 #pragma once
-#include <raylib.h>
-#include "render.hpp"
+#include "vector2.hpp"
+#include "rectangle.hpp"
 
 #define MOUSE_LEFT  (char)0x01
 #define MOUSE_RIGHT (char)0x02
@@ -15,9 +15,9 @@ namespace Engine {
     namespace Input {
 
         struct Mouse {
-            Vector2 cursor;
-            Vector2 p0;
-            Rectangle rect;
+            Engine::Vector2 cursor;
+            Engine::Vector2 p0;
+            Engine::Rectangle rect;
             char pressed;
             char down;
         };

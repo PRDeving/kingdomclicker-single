@@ -1,15 +1,9 @@
 #pragma once
 #include <functional>
-#include <raylib.h>
-
-// Raylib -> engine bindings
-#define COLOR_WHITE RAYWHITE
-#define COLOR_BLACK BLACK
-namespace Engine {
-    typedef Color Color;
-    typedef Camera2D Camera2D;
-}
-// END
+#include "vector2.hpp"
+#include "rectangle.hpp"
+#include "camera.hpp"
+#include "color.hpp"
 
 namespace Engine {
     namespace Render {
@@ -23,8 +17,10 @@ namespace Engine {
 
         void clearBackground(Engine::Color color);
         void text(const char* str, int x, int y, int size, Engine::Color color);
-        void text(Vector2 vec, int x, int y, int size, Engine::Color color);
+        void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color);
 
-        void stroke(int x, int y, int w, int h, Engine::Color color);
+        void stroke(Engine::Rectangle rect, Engine::Color color);
+
+        void draw(int x, int y, int w, int h, Engine::Color color);
     }
 }

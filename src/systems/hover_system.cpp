@@ -5,9 +5,11 @@
 
 namespace Systems {
 
-    void HoverSystem(entt::registry& registry, Engine::Input::Input& input, Camera2D& camera) {
-        Vector2 cursor = GetScreenToWorld2D(input.mouse.cursor, camera);
-        Vector2 p0 = GetScreenToWorld2D(Vector2{ input.mouse.rect.x, input.mouse.rect.y }, camera);
+    void HoverSystem(entt::registry& registry, Engine::Input::Input& input, Engine::Camera2D& camera) {
+        Engine::Vector2 cursor = Engine::Camera::screenToWorld(input.mouse.cursor, camera);
+        // Engine::Vector2 p0 = Engine::Camera::screenToWorld(Engine::Vector2{ input.mouse.rect.x, input.mouse.rect.y }, camera);
+
+        Engine::Vector2 p0 = Engine::Camera::screenToWorld(input.mouse.rect.point, camera);
 
         auto view = registry.view<Components::Hovered>();
         registry.view<Components::Position, Components::CircleCollider>().each([&registry, &input, &cursor, &p0, &view, &camera](auto entity, auto& position, auto& collider) {
@@ -17,9 +19,9 @@ namespace Systems {
             bool hover = (
                 distance <= collider.radius
                 || (
-                    input.mouse.rect.width
-                    && (position.x >= p0.x && position.x <= p0.x + input.mouse.rect.width)
-                    && (position.y >= p0.y && position.y <= p0.y + input.mouse.rect.height)
+                    input.mouse.rect.size.x
+                    && (position.x >= p0.x && position.x <= p0.x + input.mouse.rect.size.x)
+                    && (position.y >= p0.y && position.y <= p0.y + input.mouse.rect.size.y)
                 )
 
             );

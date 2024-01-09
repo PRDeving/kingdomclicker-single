@@ -4,7 +4,7 @@
 namespace Systems {
 
     void SelectionSystem(entt::registry& registry, Engine::Input::Input& input) {
-        bool action = (input.mouse.pressed & MOUSE_LEFT || input.mouse.rect.width);
+        bool action = (input.mouse.pressed & MOUSE_LEFT || input.mouse.rect.size.x);
         if (!action) return;
 
         auto view = registry.view<Components::Selected>();

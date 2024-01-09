@@ -18,7 +18,7 @@ enum LAYER {
 struct Task {
     ACTION type;
     union {
-        Vector2 location;
+        Engine::Vector2 location;
         entt::entity target;
     };
 };

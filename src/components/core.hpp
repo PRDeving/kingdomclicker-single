@@ -7,8 +7,8 @@ namespace Components {
     struct Camera {};
 
     // MOVEMENT RELATED
-    struct Position : Vector2 { };
-    struct Direction : Vector2 { };
+    struct Position : Engine::Vector2 { };
+    struct Direction : Engine::Vector2 { };
     typedef float Speed;
 
     // INTERACTION RELATED
@@ -24,8 +24,8 @@ namespace Components {
     typedef std::vector<entt::entity> Collision;
 
     // PATHFINDING RELATED
-    typedef std::vector<Vector2> Waypoints;
-    typedef std::vector<Vector2> Pathfinding;
+    typedef std::vector<Engine::Vector2> Waypoints;
+    typedef std::vector<Engine::Vector2> Pathfinding;
 
     // TASK RELATED
     struct Target {

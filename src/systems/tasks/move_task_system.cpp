@@ -33,7 +33,7 @@ namespace Systems {
 
         // INIT
         registry.view<Components::TaskMoveTo>(entt::exclude<Components::Waypoints>).each([&registry](auto entity, auto& target) {
-            std::vector<Vector2> steps;
+            std::vector<Engine::Vector2> steps;
             steps.push_back(target);
             registry.emplace_or_replace<Components::Waypoints>(entity, steps);
         });

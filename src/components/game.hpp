@@ -19,7 +19,7 @@ namespace Components {
     };
 
     typedef std::vector<Task> TaskQueue;
-    struct TaskMoveTo : Vector2 { };
+    struct TaskMoveTo : Engine::Vector2 { };
     struct TaskMoveToTarget {
         entt::entity target;
     };
