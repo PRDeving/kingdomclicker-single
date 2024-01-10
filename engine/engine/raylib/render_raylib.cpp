@@ -96,6 +96,35 @@ namespace Engine {
                 (::Color&)color
             );
         }
+
+        void draw(Engine::Sprite& sprite, int frame, Engine::Vector2 position, Engine::Vector2 dimensions, Engine::Color color) {
+            DrawTexturePro(
+                    // Texture2D texture,
+                (::Texture2D&)sprite.texture,
+                    // Rectangle source,
+                ::Rectangle{
+                    sprite.frameSize.x * (frame % (int)sprite.frames.x),
+                    sprite.frameSize.y * (int)(frame / sprite.frames.x),
+                    sprite.frameSize.x,
+                    sprite.frameSize.y
+                },
+                    // Rectangle dest,
+                ::Rectangle{
+                    (int)position.x,
+                    (int)position.y,
+                    (int)dimensions.x,
+                    (int)dimensions.y
+                },
+                    // Vector2 origin,
+                ::Vector2{0.0f, 0.0f},
+                    // float rotation,
+                0.0f,
+                    // Color tint
+                (::Color&)color
+            );
+
+        }
+
     }
 }
 #endif

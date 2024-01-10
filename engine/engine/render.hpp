@@ -31,5 +31,6 @@ namespace Engine {
 
         // Sprites
         void draw(Engine::Sprite& sprite, int frame, Engine::Vector2 position, Engine::Color color);
+        void draw(Engine::Sprite& sprite, int frame, Engine::Vector2 position, Engine::Vector2 dimensions, Engine::Color color);
     }
 }

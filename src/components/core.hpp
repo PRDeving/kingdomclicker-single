@@ -6,6 +6,8 @@ namespace Components {
 
     struct Camera {};
 
+    struct Scale : Engine::Vector2 { };
+
     // MOVEMENT RELATED
     struct Position : Engine::Vector2 { };
     struct Direction : Engine::Vector2 { };
@@ -36,12 +38,12 @@ namespace Components {
     // // RENDERING RELATED
     struct Sprite : Engine::Sprite {};
 
-    // struct Animation {
-    //     std::unordered_map<std::string, Animation> animations;
-    //     std::string current;
-    //     int frame;
-    //     float frameTime;
-    //     float elapsedTime;
-    // };
+    struct Animation {
+        std::unordered_map<std::string, std::vector<int>>* animations;
+        std::string current;
+        unsigned char frame;
+        float frameTime;
+        float elapsed;
+    };
 
 }

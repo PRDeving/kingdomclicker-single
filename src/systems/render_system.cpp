@@ -19,16 +19,19 @@ namespace Systems {
             Engine::Render::projection(camera, [&registry]() {
                 auto selected = registry.view<Components::Selected>();
                 auto collecting = registry.view<Components::TaskCollectFromTarget>();
-                registry.view<Components::Unit, Components::Position>().each([&selected, &collecting](auto entity, auto& position) {
-                        Engine::Render::draw(position.x - 5, position.y - 5, 10, 10, selected.contains(entity) ? COLOR_RED : COLOR_LIGHTGRAY);
-                    if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
-                });
 
                 registry.view<Components::Resource, Components::Storage, Components::Position>().each([](auto& resource, auto& storage, auto& position) {
                     std::ostringstream txt;
                     txt << std::to_string(storage.amount).c_str() << "/" << std::to_string(storage.capacity).c_str();
                     Engine::Render::text(txt.str().c_str(), position.x - 20, position.y - 20, 10, COLOR_BLACK);
                     Engine::Render::draw(position.x - 5, position.y - 5, 10, 10, COLOR_GREEN);
+                });
+
+                registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&collecting](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
+                    if (!(*animation.animations)[animation.current].size()) return;
+                    int frame = (*animation.animations)[animation.current][animation.frame];
+                    Engine::Render::draw(sprite, frame, position - scale / 2, scale, COLOR_WHITE);
+                    if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
                 });
             });
         });

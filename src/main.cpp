@@ -44,8 +44,15 @@ void fixedUpdate(entt::registry& registry, float deltatime) {
 int main() {
     Engine::init("Raid");
 
-    Engine::Texture playerTexture = Engine::Assets::Texture::load("../assets/male_base.png");
-    Engine::Sprite playerSprite(playerTexture, Engine::Vector2{ 9.0f, 4.0f });
+    Engine::Texture playerTexture = Engine::Assets::Texture::load("../assets/base.png");
+    Engine::Sprite playerSprite(playerTexture, Engine::Vector2{ 4.0f, 4.0f });
+
+    std::unordered_map<std::string, std::vector<int>> animations;
+    animations["idle"] = std::vector<int>{0};
+    animations["walk_down"] = std::vector<int>{0,1,2,3};
+    animations["walk_up"] = std::vector<int>{4,5,6,7};
+    animations["walk_right"] = std::vector<int>{8,9,10,11};
+    animations["walk_left"] = std::vector<int>{12,13,14,15};
 
 
     entt::registry registry;
@@ -61,10 +68,11 @@ int main() {
     registry.emplace<Components::CircleCollider>(tree, 6.0f, LAYER::RESOURCES);
     registry.emplace<Components::Resource>(tree, ITEM::WOOD);
     registry.emplace<Components::Storage>(tree, 100u, 100u);
-    registry.emplace<Components::Sprite>(tree, playerSprite);
 
     for(int i = 0; i < 8; i++) {
-        Assamblages::Unit(registry, 15.0f * i, 10.0f);
+        auto unit = Assamblages::Unit(registry, 15.0f * i, 10.0f);
+        registry.emplace<Components::Sprite>(unit, playerSprite);
+        registry.emplace<Components::Animation>(unit, &animations, "idle", (unsigned char)0, 200.0f);
     }
 
     auto &input = registry.ctx().get<Engine::Input::Input>();
@@ -120,16 +128,30 @@ int main() {
         Systems::render(registry);
         if (input.mouse.rect.size.x) Engine::Render::stroke(input.mouse.rect, COLOR_ORANGE);
 
-        registry.view<Components::Position, Components::Sprite>().each([](auto& position, auto& sprite) {
-            Engine::Render::draw(sprite, 1, position, COLOR_WHITE);
+
+        registry.view<Components::Animation>().each([deltatime](auto& animation) {
+            if (!(*animation.animations)[animation.current].size()) return;
+
+            animation.elapsed += deltatime;
+            if (animation.elapsed >= animation.frameTime) {
+                animation.frame = (animation.frame + 1) % (*animation.animations)[animation.current].size();
+                animation.elapsed = 0;
+            }
         });
 
-        // d += deltatime;
-        // if (d > 100) {
-        //     f++;
-        //     d = 0;
-        //     if (f >= 9) f = 1;
-        // }
+        registry.view<Components::Direction, Components::Animation>().each([deltatime](auto& direction, auto& animation) {
+            if (fabs(direction.x) > fabs(direction.y)) {
+                if (direction.x > 0) animation.current = "walk_right";
+                else if (direction.x < 0) animation.current = "walk_left";
+            } else {
+                if (direction.y > 0) animation.current = "walk_down";
+                else if (direction.y < 0) animation.current = "walk_up";
+            }
+        });
+
+        registry.view<Components::Animation>(entt::exclude<Components::Direction>).each([deltatime](auto& animation) {
+            animation.current = "idle";
+        });
 
     }, (1000/60), NULL);
 
