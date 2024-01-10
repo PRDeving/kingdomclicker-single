@@ -15,6 +15,7 @@
 #include "systems/pathfinding.hpp"
 #include "systems/movement.hpp"
 #include "systems/collision.hpp"
+#include "systems/animation.hpp"
 
 #include "systems/tasks/queue.hpp"
 #include "systems/tasks/move.hpp"
@@ -49,10 +50,10 @@ int main() {
 
     std::unordered_map<std::string, std::vector<int>> animations;
     animations["idle"] = std::vector<int>{0};
-    animations["walk_down"] = std::vector<int>{0,1,2,3};
-    animations["walk_up"] = std::vector<int>{4,5,6,7};
-    animations["walk_right"] = std::vector<int>{8,9,10,11};
-    animations["walk_left"] = std::vector<int>{12,13,14,15};
+    animations["move_down"] = std::vector<int>{0,1,2,3};
+    animations["move_up"] = std::vector<int>{4,5,6,7};
+    animations["move_right"] = std::vector<int>{8,9,10,11};
+    animations["move_left"] = std::vector<int>{12,13,14,15};
 
 
     entt::registry registry;
@@ -125,31 +126,22 @@ int main() {
         Systems::TaskQueueSystem(registry);
         Systems::MoveTaskSystem(registry, deltatime);
 
+        Systems::AnimationSystem(registry, deltatime);
         Systems::render(registry);
+
         if (input.mouse.rect.size.x) Engine::Render::stroke(input.mouse.rect, COLOR_ORANGE);
 
-
-        registry.view<Components::Animation>().each([deltatime](auto& animation) {
-            if (!(*animation.animations)[animation.current].size()) return;
-
-            animation.elapsed += deltatime;
-            if (animation.elapsed >= animation.frameTime) {
-                animation.frame = (animation.frame + 1) % (*animation.animations)[animation.current].size();
-                animation.elapsed = 0;
-            }
-        });
-
-        registry.view<Components::Direction, Components::Animation>().each([deltatime](auto& direction, auto& animation) {
+        registry.view<Components::Direction, Components::Animation>().each([](auto& direction, auto& animation) {
             if (fabs(direction.x) > fabs(direction.y)) {
-                if (direction.x > 0) animation.current = "walk_right";
-                else if (direction.x < 0) animation.current = "walk_left";
+                if (direction.x > 0) animation.current = "move_right";
+                else if (direction.x < 0) animation.current = "move_left";
             } else {
-                if (direction.y > 0) animation.current = "walk_down";
-                else if (direction.y < 0) animation.current = "walk_up";
+                if (direction.y > 0) animation.current = "move_down";
+                else if (direction.y < 0) animation.current = "move_up";
             }
         });
 
-        registry.view<Components::Animation>(entt::exclude<Components::Direction>).each([deltatime](auto& animation) {
+        registry.view<Components::Animation>(entt::exclude<Components::Direction>).each([](auto& animation) {
             animation.current = "idle";
         });
 

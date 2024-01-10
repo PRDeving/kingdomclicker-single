@@ -27,10 +27,13 @@ namespace Systems {
                     Engine::Render::draw(position.x - 5, position.y - 5, 10, 10, COLOR_GREEN);
                 });
 
-                registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&collecting](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
+                registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&collecting, &selected](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
                     if (!(*animation.animations)[animation.current].size()) return;
+
                     int frame = (*animation.animations)[animation.current][animation.frame];
-                    Engine::Render::draw(sprite, frame, position - scale / 2, scale, COLOR_WHITE);
+                    Engine::Color color = selected.contains(entity) ? COLOR_WHITE : COLOR_LIGHTGRAY;
+                    Engine::Render::draw(sprite, frame, position - scale / 2, scale, color);
+
                     if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
                 });
             });
