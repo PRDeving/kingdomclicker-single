@@ -6,15 +6,8 @@
 #include <raylib.h>
 #include "../vector2.hpp"
 #include "../rectangle.hpp"
-
-::Color toRaylib(Engine::Color color) {
-    ::Color ret;
-    ret.r = color.r;
-    ret.g = color.g;
-    ret.b = color.b;
-    ret.a = color.a;
-    return ret;
-}
+#include "../texture.hpp"
+#include "../sprite.hpp"
 
 namespace Engine {
     namespace Render {
@@ -49,24 +42,59 @@ namespace Engine {
         }
 
         void clearBackground(Engine::Color color) {
-            ClearBackground(toRaylib(color));
+            ClearBackground((::Color&)color);
         }
 
         void text(const char* str, int x, int y, int size, Engine::Color color) {
-            DrawText(str, x, y, size, toRaylib(color));
+            DrawText(str, x, y, size, (::Color&)color);
         }
         void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color) {
             std::ostringstream str;
             str << "x: " << vec.x << " / y: " << vec.y;
-            DrawText(str.str().c_str(), x, y, size, toRaylib(color));
+            DrawText(str.str().c_str(), x, y, size, (::Color&)color);
         }
 
         void stroke(Engine::Rectangle rect, Engine::Color color) {
-            DrawRectangleLines(rect.point.x, rect.point.y, rect.size.x, rect.size.y, toRaylib(color));
+            DrawRectangleLines(rect.point.x, rect.point.y, rect.size.x, rect.size.y, (::Color&)color);
         }
 
         void draw(int x, int y, int w, int h, Engine::Color color) {
-            DrawRectangle(x, y, w, h, toRaylib(color));
+            DrawRectangle(x, y, w, h, (::Color&)color);
+        }
+
+
+        // TEXTURES AND SPRITES
+
+        void draw(Engine::Texture& texture, Engine::Vector2 position, Engine::Color color) {
+            DrawTexture(
+                (::Texture2D&)texture,
+                position.x,
+                position.y,
+                (::Color&)color
+            );
+        }
+
+        void draw(Engine::Texture& texture, Engine::Rectangle source, Engine::Vector2 position, Engine::Color color) {
+            DrawTextureRec(
+                (::Texture2D&)texture,
+                (::Rectangle&)source,
+                (::Vector2&)position,
+                (::Color&)color
+            );
+        }
+
+        void draw(Engine::Sprite& sprite, int frame, Engine::Vector2 position, Engine::Color color) {
+            DrawTextureRec(
+                (::Texture2D&)sprite.texture,
+                ::Rectangle{
+                    sprite.frameSize.x * (frame % (int)sprite.frames.x),
+                    sprite.frameSize.y * (int)(frame / sprite.frames.x),
+                    sprite.frameSize.x,
+                    sprite.frameSize.y
+                },
+                (::Vector2&)position,
+                (::Color&)color
+            );
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Engine {
     }
 
     void close() {
+        Engine::Assets::close();
         Engine::Render::close();
     }
 

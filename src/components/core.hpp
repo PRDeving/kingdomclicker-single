@@ -33,4 +33,15 @@ namespace Components {
         bool onRange;
     };
 
+    // // RENDERING RELATED
+    struct Sprite : Engine::Sprite {};
+
+    // struct Animation {
+    //     std::unordered_map<std::string, Animation> animations;
+    //     std::string current;
+    //     int frame;
+    //     float frameTime;
+    //     float elapsedTime;
+    // };
+
 }

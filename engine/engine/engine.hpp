@@ -1,7 +1,10 @@
 #pragma once
 #include "input.hpp"
 #include "random.hpp"
+#include "assets.hpp"
 
+#include "texture.hpp"
+#include "sprite.hpp"
 #include "render.hpp"
 #include "camera.hpp"
 #include "physics.hpp"
