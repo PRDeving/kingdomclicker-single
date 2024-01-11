@@ -4,6 +4,14 @@
 #include <engine/engine.hpp>
 #include "../components/components.hpp"
 
+struct Drawable {
+    Components::Position* position;
+    Components::Scale* scale;
+    Components::Sprite* sprite;
+    char frame;
+    Engine::Color* color;
+};
+
 namespace Systems {
 
     void render(entt::registry &registry){
@@ -27,15 +35,25 @@ namespace Systems {
                     Engine::Render::draw(position.x - 5, position.y - 5, 10, 10, COLOR_GREEN);
                 });
 
-                registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&collecting, &selected](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
+                std::vector<Drawable> drawable;
+
+                registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&drawable, &collecting, &selected](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
                     if (!(*animation.animations)[animation.current].size()) return;
 
                     int frame = (*animation.animations)[animation.current][animation.frame];
                     Engine::Color color = selected.contains(entity) ? COLOR_WHITE : COLOR_LIGHTGRAY;
-                    Engine::Render::draw(sprite, frame, position - scale / 2, scale, color);
+                    drawable.push_back(Drawable{&position, &scale, &sprite, static_cast<char>(frame), &color});
 
-                    if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
+                    // if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
                 });
+
+                std::sort(drawable.begin(), drawable.end(), [](Drawable a, Drawable b) {
+                        return a.position->y < b.position->y;
+                });
+
+                for (Drawable unit : drawable) {
+                    Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, *unit.color);
+                }
             });
         });
     }
