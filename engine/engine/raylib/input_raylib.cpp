@@ -12,6 +12,7 @@ namespace Engine {
             input -> mouse.down = 0;
             input -> mouse.pressed = 0;
             input -> keyboard.down = 0;
+            input -> keyboard.pressed = 0;
 
             // MOUSE DOWN
 
@@ -52,6 +53,12 @@ namespace Engine {
             if (IsKeyDown(KEY_A)) input->keyboard.down |= (char)Engine::Input::Key::LEFT;
             if (IsKeyDown(KEY_D)) input->keyboard.down |= (char)Engine::Input::Key::RIGHT;
             if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) input->keyboard.down |= (char)Engine::Input::Key::SHIFT;
+
+            if (IsKeyPressed(KEY_W)) input->keyboard.pressed |= (char)Engine::Input::Key::UP;
+            if (IsKeyPressed(KEY_S)) input->keyboard.pressed |= (char)Engine::Input::Key::DOWN;
+            if (IsKeyPressed(KEY_A)) input->keyboard.pressed |= (char)Engine::Input::Key::LEFT;
+            if (IsKeyPressed(KEY_D)) input->keyboard.pressed |= (char)Engine::Input::Key::RIGHT;
+            if (IsKeyPressed(KEY_LEFT_SHIFT) || IsKeyPressed(KEY_RIGHT_SHIFT)) input->keyboard.pressed |= (char)Engine::Input::Key::SHIFT;
         }
     }
 }

@@ -2,6 +2,7 @@
 #include "input.hpp"
 #include "random.hpp"
 #include "assets.hpp"
+#include "scene.hpp"
 
 #include "texture.hpp"
 #include "sprite.hpp"
