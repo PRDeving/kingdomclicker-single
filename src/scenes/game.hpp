@@ -25,6 +25,7 @@ namespace Scenes {
 
     private:
         entt::registry registry;
+        // Engine::IA::Navmesh navmesh;
 
         Engine::Texture playerTexture;
         Engine::Sprite playerSprite;
@@ -48,6 +49,7 @@ namespace Scenes {
             registry.clear();
             registry.ctx().emplace<Engine::Input::Input>();
             registry.ctx().emplace<Engine::Camera2D>(400.0f, 300.0f);
+            registry.ctx().emplace<Engine::IA::Navmesh>();
 
             entt::entity camera_entity = registry.create();
             registry.emplace<Components::Position>(camera_entity, 30.0f, 30.0f);
@@ -58,6 +60,15 @@ namespace Scenes {
                 registry.emplace<Components::Sprite>(unit, playerSprite);
                 registry.emplace<Components::Animation>(unit, &animations, "idle", (unsigned char)0, 200.0f);
             }
+
+            std::vector<Engine::Polygon> polygons{
+                {{0, 0}, {500, 0}, {500, 500}, {0, 500}},
+                {{100, 100}, {150, 100}, {150, 150}, {100, 150}},
+                {{300, 300}, {350, 300}, {350, 350}, {300, 350}},
+            };
+
+            auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
+            Engine::IA::Navigation::compute(polygons, &navmesh);
         }
 
         void fixedUpdate(float deltatime) {
@@ -122,9 +133,9 @@ namespace Scenes {
         }
 
         void draw(float deltatime) {
-            auto& input = registry.ctx().get<Engine::Input::Input>();
-
             Systems::render(registry);
+
+            auto& input = registry.ctx().get<Engine::Input::Input>();
             if (input.mouse.rect.size.x) Engine::Render::stroke(input.mouse.rect, COLOR_ORANGE);
         }
 
