@@ -9,7 +9,7 @@ struct Drawable {
     Components::Scale* scale;
     Components::Sprite* sprite;
     char frame;
-    Engine::Color* color;
+    Engine::Color color;
 };
 
 namespace Systems {
@@ -42,17 +42,17 @@ namespace Systems {
 
                     int frame = (*animation.animations)[animation.current][animation.frame];
                     Engine::Color color = selected.contains(entity) ? COLOR_WHITE : COLOR_LIGHTGRAY;
-                    drawable.push_back(Drawable{&position, &scale, &sprite, static_cast<char>(frame), &color});
+                    drawable.push_back(Drawable{&position, &scale, &sprite, static_cast<char>(frame), color});
 
                     // if (collecting.contains(entity)) Engine::Render::text("collecting", position.x - 20, position.y - 20, 10, COLOR_BLACK);
                 });
 
                 std::sort(drawable.begin(), drawable.end(), [](Drawable a, Drawable b) {
-                        return a.position->y < b.position->y;
+                    return a.position->y < b.position->y;
                 });
 
                 for (Drawable unit : drawable) {
-                    Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, *unit.color);
+                    Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, unit.color);
                 }
             });
         });
