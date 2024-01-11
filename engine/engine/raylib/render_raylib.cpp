@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include "../vector2.hpp"
 #include "../rectangle.hpp"
+#include "../triangle.hpp"
 #include "../texture.hpp"
 #include "../sprite.hpp"
 
@@ -54,12 +55,20 @@ namespace Engine {
             DrawText(str.str().c_str(), x, y, size, (::Color&)color);
         }
 
-        void stroke(Engine::Rectangle rect, Engine::Color color) {
+        void stroke(Engine::Rectangle& rect, Engine::Color color) {
             DrawRectangleLines(rect.point.x, rect.point.y, rect.size.x, rect.size.y, (::Color&)color);
+        }
+
+        void stroke(Engine::Triangle& triangle, Engine::Color color) {
+            DrawTriangleLines((::Vector2&)triangle.p1, (::Vector2&)triangle.p2, (::Vector2&)triangle.p3, (::Color&)color);
         }
 
         void draw(int x, int y, int w, int h, Engine::Color color) {
             DrawRectangle(x, y, w, h, (::Color&)color);
+        }
+
+        void draw(Engine::Triangle& triangle, Engine::Color color) {
+            DrawTriangle((::Vector2&)triangle.p3, (::Vector2&)triangle.p2, (::Vector2&)triangle.p1, (::Color&)color);
         }
 
 

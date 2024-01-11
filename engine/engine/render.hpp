@@ -2,6 +2,7 @@
 #include <functional>
 #include "vector2.hpp"
 #include "rectangle.hpp"
+#include "triangle.hpp"
 #include "camera.hpp"
 #include "color.hpp"
 #include "texture.hpp"
@@ -21,9 +22,11 @@ namespace Engine {
         void text(const char* str, int x, int y, int size, Engine::Color color);
         void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color);
 
-        void stroke(Engine::Rectangle rect, Engine::Color color);
+        void stroke(Engine::Rectangle& rect, Engine::Color color);
+        void stroke(Engine::Triangle& triangle, Engine::Color color);
 
         void draw(int x, int y, int w, int h, Engine::Color color);
+        void draw(Engine::Triangle& triangle, Engine::Color color);
 
         // Textures
         void draw(Engine::Texture& texture, Engine::Vector2 position, Engine::Color color);

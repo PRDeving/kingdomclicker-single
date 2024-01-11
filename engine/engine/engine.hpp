@@ -9,11 +9,13 @@
 #include "render.hpp"
 #include "camera.hpp"
 #include "physics.hpp"
+#include "navmesh.hpp"
 
 #include "color.hpp"
 #include "vector2.hpp"
 #include "rectangle.hpp"
 #include "circle.hpp"
+#include "polygon.hpp"
 
 namespace Engine {
     bool isRunning();
