@@ -36,7 +36,7 @@ namespace Engine {
         }
 
         void load(Scene* scene) {
-            setup();
+            scene->setup();
             scenes.push(scene);
         }
 

@@ -76,7 +76,7 @@ namespace Scenes {
 
             Systems::HoverSystem(registry, input, camera);
             Systems::SelectionSystem(registry, input);
-
+        
             if (input.mouse.pressed & (char)Engine::Input::Button::RIGHT) {
                 auto entities = registry.view<Components::Selected, Components::TaskQueue>();
                 if (entities.begin() != entities.end()) {

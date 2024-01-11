@@ -19,7 +19,6 @@ namespace Scenes {
         void fixedUpdate(float deltatime) { }
 
         void update(float deltatime) {
-            std::cout << "splash: " << elapsed << std::endl;
             elapsed += deltatime;
             if (elapsed >= loadtime) Engine::Scenes::load(Scenes::Game::getInstance());
         }
