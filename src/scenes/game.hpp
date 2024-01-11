@@ -4,6 +4,8 @@
 
 #include <entt/entt.hpp>
 #include <random>
+#include <iostream>
+#include <cstdlib>
 
 #include "../components/components.hpp"
 #include "../assamblages/assamblages.hpp"
@@ -25,7 +27,6 @@ namespace Scenes {
 
     private:
         entt::registry registry;
-        // Engine::IA::Navmesh navmesh;
 
         Engine::Texture playerTexture;
         Engine::Sprite playerSprite;
@@ -49,7 +50,6 @@ namespace Scenes {
             registry.clear();
             registry.ctx().emplace<Engine::Input::Input>();
             registry.ctx().emplace<Engine::Camera2D>(400.0f, 300.0f);
-            registry.ctx().emplace<Engine::IA::Navmesh>();
 
             entt::entity camera_entity = registry.create();
             registry.emplace<Components::Position>(camera_entity, 30.0f, 30.0f);
@@ -62,11 +62,21 @@ namespace Scenes {
             }
 
             std::vector<Engine::Polygon> polygons{
-                {{0, 0}, {500, 0}, {500, 500}, {0, 500}},
-                {{100, 100}, {150, 100}, {150, 150}, {100, 150}},
-                {{300, 300}, {350, 300}, {350, 350}, {300, 350}},
+                {{0, 0}, {700, 0}, {700, 700}, {0, 700}},
             };
 
+            for (int i = 0; i < 3; i++) {
+                auto x = Engine::Random::range<float>(150, 500);
+                auto y = Engine::Random::range<float>(150, 500);
+                polygons.push_back({
+                    { x + 0, y + 0},
+                    { x + 50, y + 0},
+                    { x + 50, y + 50},
+                    { x + 0, y + 50}
+                });
+            }
+
+            registry.ctx().emplace<Engine::IA::Navmesh>();
             auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
             Engine::IA::Navigation::compute(polygons, &navmesh);
         }

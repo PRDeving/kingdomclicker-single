@@ -49,10 +49,23 @@ namespace Systems {
                 });
 
                 auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
+
                 for (auto& triangle : navmesh.triangles) {
                     Engine::Render::draw(triangle, COLOR_DEBUG);
                     Engine::Render::stroke(triangle, COLOR_GREEN);
                 }
+
+                registry.view<Components::Position, Components::Waypoints>().each([](auto& position, auto& waypoints) {
+                    Engine::Render::line(position, waypoints[0], COLOR_YELLOW);
+
+                    Engine::Vector2* prev = nullptr;
+                    for (int i = 0;  i < waypoints.size(); i++) {
+                        Engine::Render::draw(waypoints[i].x - 4, waypoints[i].y - 4, 8, 8, COLOR_YELLOW);
+                        if (prev != nullptr) Engine::Render::line(*prev, waypoints[i], COLOR_YELLOW);
+                        prev = &waypoints[i];
+                    }
+                    
+                });
 
                 for (Drawable unit : drawable) {
                     Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, unit.color);

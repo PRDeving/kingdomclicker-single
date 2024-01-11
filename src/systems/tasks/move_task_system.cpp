@@ -32,10 +32,11 @@ namespace Systems {
         });
 
         // INIT
-        registry.view<Components::TaskMoveTo>(entt::exclude<Components::Waypoints>).each([&registry](auto entity, auto& target) {
-            std::vector<Engine::Vector2> steps;
-            steps.push_back(target);
-            registry.emplace_or_replace<Components::Waypoints>(entity, steps);
+        registry.view<Components::Position, Components::TaskMoveTo>(entt::exclude<Components::Waypoints>).each([&registry](auto entity, auto& position, auto& target) {
+            auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
+            std::vector<Engine::Vector2> steps = Engine::IA::Navigation::path(navmesh, position, target);
+            if (!steps.size()) return;
+            registry.emplace<Components::Waypoints>(entity, steps);
         });
 
         // CLEAN
