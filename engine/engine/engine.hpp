@@ -10,6 +10,7 @@
 #include "camera.hpp"
 #include "physics.hpp"
 #include "navmesh.hpp"
+#include "astar.hpp"
 
 #include "color.hpp"
 #include "vector2.hpp"

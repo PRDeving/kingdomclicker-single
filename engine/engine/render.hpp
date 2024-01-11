@@ -20,7 +20,10 @@ namespace Engine {
 
         void clearBackground(Engine::Color color);
         void text(const char* str, int x, int y, int size, Engine::Color color);
+        void text(const char* str, Engine::Vector2 vec, int size, Engine::Color color);
         void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color);
+
+        void line(Engine::Vector2& a, Engine::Vector2& b, Engine::Color color);
 
         void stroke(Engine::Rectangle& rect, Engine::Color color);
         void stroke(Engine::Triangle& triangle, Engine::Color color);

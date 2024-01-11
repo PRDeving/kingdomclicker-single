@@ -49,6 +49,11 @@ namespace Engine {
         void text(const char* str, int x, int y, int size, Engine::Color color) {
             DrawText(str, x, y, size, (::Color&)color);
         }
+
+        void text(const char* str, Engine::Vector2 vec, int size, Engine::Color color) {
+            text(str, vec.x, vec.y, size, color);
+        }
+
         void text(Engine::Vector2 vec, int x, int y, int size, Engine::Color color) {
             std::ostringstream str;
             str << "x: " << vec.x << " / y: " << vec.y;
@@ -61,6 +66,10 @@ namespace Engine {
 
         void stroke(Engine::Triangle& triangle, Engine::Color color) {
             DrawTriangleLines((::Vector2&)triangle.p1, (::Vector2&)triangle.p2, (::Vector2&)triangle.p3, (::Color&)color);
+        }
+
+        void line(Engine::Vector2& a, Engine::Vector2& b, Engine::Color color) {
+            DrawLineV((::Vector2&)a, (::Vector2&)b, (::Color&)color);
         }
 
         void draw(int x, int y, int w, int h, Engine::Color color) {
