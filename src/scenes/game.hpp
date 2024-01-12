@@ -56,7 +56,7 @@ namespace Scenes {
             registry.emplace<Components::Camera>(camera_entity);
         
             for(int i = 0; i < 8; i++) {
-                auto unit = Assamblages::Unit(registry, 15.0f * i, 10.0f);
+                auto unit = Assamblages::Unit(registry, 10 + 15.0f * i, 10.0f);
                 registry.emplace<Components::Sprite>(unit, playerSprite);
                 registry.emplace<Components::Animation>(unit, &animations, "idle", (unsigned char)0, 200.0f);
             }

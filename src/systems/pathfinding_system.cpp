@@ -6,13 +6,25 @@
 namespace Systems {
 
     void PathfindingSystem(entt::registry& registry, float deltatime) {
+        auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
+
         registry.view<Components::Direction>(entt::exclude<Components::Waypoints>).each( [&registry](entt::entity entity, auto& direction) {
             registry.remove<Components::Direction>(entity);
         });
 
         registry.view<Components::Position, Components::Speed, Components::Waypoints>().each(
-            [&registry, &deltatime](entt::entity entity, auto& position, auto speed, auto& waypoints) {
+            [&registry, &navmesh, &deltatime](entt::entity entity, auto& position, auto speed, auto& waypoints) {
                 if (!waypoints.empty()) {
+
+                    // prune steps if next waypoints are visible
+                    for (int i = waypoints.size() - 1; i >= 0; i--) {
+                        auto line = Engine::Line{ position, waypoints[i] };
+                        if (!Engine::Physics::collides(line, navmesh.obstacles)) {
+                            waypoints.erase(waypoints.begin(), waypoints.begin() + i);
+                            break;
+                        }
+                    }
+
                     auto next = waypoints.front();
                     float distance = sqrt(pow(position.x - next.x, 2) + pow(position.y - next.y, 2));
 

@@ -67,6 +67,13 @@ namespace Systems {
                     
                 });
 
+                for (Engine::Polygon obstacle : navmesh.obstacles) {
+                    for (int i = 1;  i < obstacle.size(); i++) {
+                        Engine::Render::line(obstacle[i - 1], obstacle[i], COLOR_RED);
+                    }
+                    Engine::Render::line(obstacle.back(), obstacle.front(), COLOR_RED);
+                }
+
                 for (Drawable unit : drawable) {
                     Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, unit.color);
                 }
