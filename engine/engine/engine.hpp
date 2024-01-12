@@ -16,6 +16,7 @@
 #include "vector2.hpp"
 #include "rectangle.hpp"
 #include "circle.hpp"
+#include "ellipse.hpp"
 #include "polygon.hpp"
 
 namespace Engine {

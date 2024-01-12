@@ -33,7 +33,6 @@ namespace Island {
         do {
             path.push_back(current);
 
-            // Encuentra el siguiente tile de costa
             bool foundNext = false;
             for (int i = 0; i < 8; ++i) {
                 next = {current.x + dx[i], current.y + dy[i]};

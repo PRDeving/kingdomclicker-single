@@ -147,7 +147,14 @@ namespace Scenes {
 
                         Engine::Render::draw(terrainSprite, island.map[i], Engine::Vector2{x * 32.0f - 16.0f, y * 32.0f - 16.0f}, Engine::Vector2{ 32.0f, 32.0f }, COLOR_WHITE);
                     }
+                });
+            });
 
+            Engine::Render::layer(Engine::Render::Layer::L1, [this]() {
+                auto& camera = registry.ctx().get<Engine::Camera2D>();
+                Engine::Render::projection(camera, [this]() {
+
+                    auto& island = registry.ctx().get<Island::Island>();
                     for(auto& poly : island.navmesh.obstacles) {
                         Engine::Render::draw(poly[0].x, poly[0].y, 50, 50, COLOR_GRAY);
                     }

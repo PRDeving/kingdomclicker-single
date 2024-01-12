@@ -7,6 +7,7 @@
 #include "../vector2.hpp"
 #include "../rectangle.hpp"
 #include "../triangle.hpp"
+#include "../ellipse.hpp"
 #include "../texture.hpp"
 #include "../sprite.hpp"
 
@@ -106,6 +107,16 @@ namespace Engine {
 
         void draw(Engine::Triangle& triangle, Engine::Color color) {
             DrawTriangle((::Vector2&)triangle.p3, (::Vector2&)triangle.p2, (::Vector2&)triangle.p1, (::Color&)color);
+        }
+
+        void draw(const Engine::Ellipse& ellipse, const Engine::Color color) {
+            DrawEllipse(
+                ellipse.center.x,
+                ellipse.center.y,
+                ellipse.radius.x,
+                ellipse.radius.y,
+                (::Color&)color
+            );
         }
 
 

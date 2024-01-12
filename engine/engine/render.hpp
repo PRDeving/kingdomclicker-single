@@ -3,6 +3,7 @@
 #include "vector2.hpp"
 #include "rectangle.hpp"
 #include "triangle.hpp"
+#include "ellipse.hpp"
 #include "camera.hpp"
 #include "color.hpp"
 #include "texture.hpp"
@@ -40,6 +41,7 @@ namespace Engine {
 
         void draw(int x, int y, int w, int h, Engine::Color color);
         void draw(Engine::Triangle& triangle, Engine::Color color);
+        void draw(const Engine::Ellipse& ellipse, const Engine::Color color);
 
         // Textures
         void draw(Engine::Texture& texture, Engine::Vector2 position, Engine::Color color);
