@@ -144,9 +144,6 @@ namespace Scenes {
 
         void draw(float deltatime) {
             Systems::render(registry);
-
-            auto& input = registry.ctx().get<Engine::Input::Input>();
-            if (input.mouse.rect.size.x) Engine::Render::stroke(input.mouse.rect, COLOR_ORANGE);
         }
 
         static Game* getInstance() {

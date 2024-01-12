@@ -2,7 +2,6 @@
 
 // #include "scenes/splash.hpp"
 #include "scenes/game.hpp"
-// #include "scenes/navtest.hpp"
 
 int main() {
     Engine::init("Raid");
