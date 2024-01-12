@@ -6,9 +6,13 @@ namespace Engine {
         return Render::isRunning();
     }
 
-    void init(const char* title) {
-        Engine::Render::init(800, 600, title);
+    void init(const char* title, const int w, const int h) {
+        Engine::Render::init(w, h, title);
         Engine::Random::seed(0);
+    }
+
+    void init(const char* title) {
+        init(title, 800, 600);
     }
 
     void close() {

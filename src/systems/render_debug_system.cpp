@@ -25,7 +25,7 @@ namespace Systems {
                 if (showNavmesh) {
                     for (auto& triangle : navmesh.triangles) {
                         Engine::Render::draw(triangle, COLOR_DEBUG);
-                        Engine::Render::stroke(triangle, COLOR_GREEN);
+                        Engine::Render::stroke(triangle, COLOR_SKYBLUE);
                     }
                 }
 

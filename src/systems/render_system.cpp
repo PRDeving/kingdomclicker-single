@@ -37,15 +37,13 @@ namespace Systems {
             auto& camera = registry.ctx().get<Engine::Camera2D>();
             Engine::Render::projection(camera, [&drawable]() {
                 for (Drawable unit : drawable) {
-                    Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2, *unit.scale, unit.color);
+                    Engine::Render::draw(*unit.sprite, unit.frame, *unit.position - *unit.scale / 2 - Engine::Vector2{ 0.0f, 8.0f}, *unit.scale, unit.color);
                 }
             });
         });
 
         Systems::renderUI(registry);
         Systems::renderDebug(registry);
-
-        Engine::Render::frame();
     }
 
 }

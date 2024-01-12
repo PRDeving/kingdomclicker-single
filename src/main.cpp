@@ -4,7 +4,7 @@
 #include "scenes/game.hpp"
 
 int main() {
-    Engine::init("Raid");
+    Engine::init("Raid", 1000, 800);
 
     // Engine::Scenes::load(Scenes::Splash::getInstance());
     Engine::Scenes::load(Scenes::Game::getInstance());

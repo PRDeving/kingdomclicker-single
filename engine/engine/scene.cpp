@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <iostream>
+#include "render.hpp"
 
 namespace Engine {
     namespace Scenes {
@@ -28,6 +29,7 @@ namespace Engine {
         void draw(float deltatime) {
             if (scenes.empty()) return;
             scenes.top()->draw(deltatime);
+            Engine::Render::frame();
         }
 
         void pop() {
