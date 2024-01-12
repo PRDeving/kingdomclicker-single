@@ -8,6 +8,7 @@ namespace Engine {
     namespace IA {
         struct Navmesh {
             Polygon vertices;
+            std::vector<Polygon> obstacles;
             std::vector<uint32_t> indices;
             std::vector<Triangle> triangles;
             std::vector<std::vector<int>> neighbors;

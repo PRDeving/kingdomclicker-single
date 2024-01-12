@@ -20,6 +20,7 @@ namespace Engine {
             }
 
             void compute(std::vector<Engine::Polygon>& polygons, Engine::IA::Navmesh* mesh) {
+                mesh->obstacles = polygons;
                 mesh->indices = mapbox::earcut<uint32_t>(polygons);
                 
                 for (const Engine::Polygon& poly : polygons) {

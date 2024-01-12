@@ -6,9 +6,12 @@
 #include <unordered_map>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 #include "vector2.hpp"
+#include "line.hpp"
 #include "navmesh.hpp"
+#include "physics.hpp"
 
 namespace Engine {
     namespace IA {
@@ -34,40 +37,12 @@ namespace Engine {
             return sqrt(dx * dx + dy * dy);
         }
 
-        Engine::Vector2 centroid(const Triangle& triangle) {
-            float cx = (triangle.p1.x + triangle.p2.x + triangle.p3.x) / 3.0f;
-            float cy = (triangle.p1.y + triangle.p2.y + triangle.p3.y) / 3.0f;
-            return {cx, cy};
-        }
-
-        bool pointInTriangle(const Engine::Vector2& p, const Engine::Vector2& a, const Engine::Vector2& b, const Engine::Vector2& c) {
-            // Calcula vectores
-            std::array<float, 2> v0 = {c.x - a.x, c.y - a.y};
-            std::array<float, 2> v1 = {b.x - a.x, b.y - a.y};
-            std::array<float, 2> v2 = {p.x - a.x, p.y - a.y};
-
-            // Calcula productos punto
-            float dot00 = v0[0] * v0[0] + v0[1] * v0[1];
-            float dot01 = v0[0] * v1[0] + v0[1] * v1[1];
-            float dot02 = v0[0] * v2[0] + v0[1] * v2[1];
-            float dot11 = v1[0] * v1[0] + v1[1] * v1[1];
-            float dot12 = v1[0] * v2[0] + v1[1] * v2[1];
-
-            // Calcula barycentric coordinates
-            float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-            float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-            float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-
-            // Verifica si el punto está en el triángulo
-            return (u >= 0) && (v >= 0) && (u + v < 1);
-        }
-
         namespace Navigation {
 
             int findTriangleForPoint(const Navmesh& navmesh, const Engine::Vector2& point) {
                 for (size_t i = 0; i < navmesh.triangles.size(); ++i) {
                     const Triangle& tri = navmesh.triangles[i];
-                    if (pointInTriangle(point, tri.p1, tri.p2, tri.p3)) {
+                    if (Engine::Physics::collides(point, tri)) {
                         return i;  // Índice del triángulo que contiene el punto
                     }
                 }
@@ -79,7 +54,10 @@ namespace Engine {
                 std::unordered_set<int> closedSet;
                 std::unordered_map<int, AStarNode> nodesMap;
 
-                AStarNode startNode = {startTriangle, 0, heuristic(centroid(navmesh.triangles[startTriangle]), centroid(navmesh.triangles[goalTriangle])), -1};
+                AStarNode startNode = {startTriangle, 0, heuristic(
+                    Engine::Physics::center(navmesh.triangles[startTriangle]),
+                    Engine::Physics::center(navmesh.triangles[goalTriangle])
+                ), -1};
                 openSet.push(startNode);
                 nodesMap[startTriangle] = startNode;
 
@@ -104,12 +82,12 @@ namespace Engine {
                             continue;
                         }
 
-                        float tentativeGCost = currentNode.gCost + heuristic(centroid(navmesh.triangles[currentNode.triangleIndex]), centroid(navmesh.triangles[neighborIndex]));
+                        float tentativeGCost = currentNode.gCost + heuristic(Engine::Physics::center(navmesh.triangles[currentNode.triangleIndex]), Engine::Physics::center(navmesh.triangles[neighborIndex]));
                         if (nodesMap.find(neighborIndex) != nodesMap.end() && tentativeGCost >= nodesMap[neighborIndex].gCost) {
                             continue; // No es un mejor camino
                         }
 
-                        AStarNode neighborNode = {neighborIndex, tentativeGCost, heuristic(centroid(navmesh.triangles[neighborIndex]), centroid(navmesh.triangles[goalTriangle])), currentNode.triangleIndex};
+                        AStarNode neighborNode = {neighborIndex, tentativeGCost, heuristic(Engine::Physics::center(navmesh.triangles[neighborIndex]), Engine::Physics::center(navmesh.triangles[goalTriangle])), currentNode.triangleIndex};
                         openSet.push(neighborNode);
                         nodesMap[neighborIndex] = neighborNode;
                     }
@@ -128,9 +106,10 @@ namespace Engine {
                 std::vector<Engine::Vector2> ret{ _start };
 
                 for (int idx : indices) {
-                    ret.push_back(centroid(navmesh.triangles[idx]));
+                    ret.push_back(Engine::Physics::center(navmesh.triangles[idx]));
                 }
-                ret[ret.size() - 1] = _end;
+                ret.push_back(_end);
+                            
                 return ret;
             }
 
