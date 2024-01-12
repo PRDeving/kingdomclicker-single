@@ -12,27 +12,55 @@
 
 namespace Engine {
     namespace Render {
+        namespace {
+            RenderTexture2D layers[Engine::Render::Layer::size];
+
+            Engine::Color blank = COLOR_BLANK;
+            Engine::Color white = COLOR_WHITE;
+        }
+
+        void layer(Engine::Render::Layer layer, std::function<void()> fn) {
+            BeginTextureMode(layers[(char)layer]);
+            fn();
+            EndTextureMode();
+        }
+
         bool isRunning() {
             return !WindowShouldClose();
         }
 
         void init(short w, short h, const char* title) {
             InitWindow(w, h, title);
+
+            for (auto& layer : layers) {
+                layer = LoadRenderTexture(w, h);
+            }
         }
 
         void close() {
+            for (auto& layer : layers) {
+                UnloadRenderTexture(layer);
+            }
             CloseWindow();
         }
 
-        void frame(std::function<void()> frame) {
+        void frame() {
             BeginDrawing();
-            frame();
-            EndDrawing();
-        }
+            ClearBackground((::Color&)white);
 
-        void frame(Engine::Camera2D& camera, std::function<void()> frame) {
-            BeginDrawing();
-            projection(camera, frame);
+            for (auto& layer : layers) {
+                DrawTextureRec(
+                    layer.texture,
+                    (::Rectangle){ 0, 0, (float)layer.texture.width, (float)-layer.texture.height },
+                    (::Vector2){ 0, 0 },
+                    (::Color&)white
+                );
+
+                BeginTextureMode(layer);
+                ClearBackground((::Color&)blank);
+                EndTextureMode();
+            }
+
             EndDrawing();
         }
 

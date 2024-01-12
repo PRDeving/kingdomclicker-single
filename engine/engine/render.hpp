@@ -10,12 +10,22 @@
 
 namespace Engine {
     namespace Render {
+        enum Layer {
+            L0,
+            L1,
+            L2,
+            L3,
+            L4,
+            size,
+        };
+
+
         bool isRunning();
         void init(short w, short h, const char* title);
         void close();
 
-        void frame(std::function<void()> frame);
-        void frame(Engine::Camera2D& camera, std::function<void()> frame);
+        void layer(Engine::Render::Layer layer, std::function<void()> fn);
+        void frame();
         void projection(Engine::Camera2D& camera, std::function<void()> frame);
 
         void clearBackground(Engine::Color color);
