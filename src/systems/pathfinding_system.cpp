@@ -2,24 +2,25 @@
 #include <entt/entt.hpp>
 #include <engine/engine.hpp>
 #include "../components/components.hpp"
+#include "../island.hpp"
 
 namespace Systems {
 
     void PathfindingSystem(entt::registry& registry, float deltatime) {
-        auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
-
         registry.view<Components::Direction>(entt::exclude<Components::Waypoints>).each( [&registry](entt::entity entity, auto& direction) {
             registry.remove<Components::Direction>(entity);
         });
 
         registry.view<Components::Position, Components::Speed, Components::Waypoints>().each(
-            [&registry, &navmesh, &deltatime](entt::entity entity, auto& position, auto speed, auto& waypoints) {
+            [&registry, &deltatime](entt::entity entity, auto& position, auto speed, auto& waypoints) {
+                auto& island = registry.ctx().get<Island::Island>();
+
                 if (!waypoints.empty()) {
 
                     // prune steps if next waypoints are visible
                     for (int i = waypoints.size() - 1; i >= 0; i--) {
                         auto line = Engine::Line{ position, waypoints[i] };
-                        if (!Engine::Physics::collides(line, navmesh.obstacles)) {
+                        if (!Engine::Physics::collides(line, island.navmesh.obstacles)) {
                             waypoints.erase(waypoints.begin(), waypoints.begin() + i);
                             break;
                         }

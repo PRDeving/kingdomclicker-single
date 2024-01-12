@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <entt/entt.hpp>
 #include "../../components/components.hpp"
+#include "../../island.hpp"
 
 namespace Systems {
 
@@ -33,8 +34,8 @@ namespace Systems {
 
         // INIT
         registry.view<Components::Position, Components::TaskMoveTo>(entt::exclude<Components::Waypoints>).each([&registry](auto entity, auto& position, auto& target) {
-            auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
-            std::vector<Engine::Vector2> steps = Engine::IA::Navigation::path(navmesh, position, target);
+            auto& island = registry.ctx().get<Island::Island>();
+            std::vector<Engine::Vector2> steps = Engine::IA::Navigation::path(island.navmesh, position, target);
             if (!steps.size()) return;
             registry.emplace<Components::Waypoints>(entity, steps);
         });

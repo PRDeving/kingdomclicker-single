@@ -3,6 +3,7 @@
 #include <entt/entt.hpp>
 #include <engine/engine.hpp>
 #include "../components/components.hpp"
+#include "../island.hpp"
 
 // #include <raylib.h>
 #include <raygui.h>
@@ -20,10 +21,10 @@ namespace Systems {
 
             auto& camera = registry.ctx().get<Engine::Camera2D>();
             Engine::Render::projection(camera, [&registry]() {
-                auto& navmesh = registry.ctx().get<Engine::IA::Navmesh>();
+                auto& island = registry.ctx().get<Island::Island>();
 
                 if (showNavmesh) {
-                    for (auto& triangle : navmesh.triangles) {
+                    for (auto& triangle : island.navmesh.triangles) {
                         Engine::Render::draw(triangle, COLOR_DEBUG);
                         Engine::Render::stroke(triangle, COLOR_SKYBLUE);
                     }
@@ -44,7 +45,7 @@ namespace Systems {
                 }
 
                 if (showObstacles) {
-                    for (Engine::Polygon obstacle : navmesh.obstacles) {
+                    for (Engine::Polygon obstacle : island.navmesh.obstacles) {
                         for (int i = 1;  i < obstacle.size(); i++) {
                             Engine::Render::line(obstacle[i - 1], obstacle[i], COLOR_RED);
                         }

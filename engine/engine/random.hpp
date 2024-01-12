@@ -6,7 +6,7 @@ namespace Engine {
         typedef std::mt19937 Rng;
 
         namespace {
-            Rng rng(48912);
+            Rng rng(91912912);
         }
 
         void seed(const unsigned long int s);
