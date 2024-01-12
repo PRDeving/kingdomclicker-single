@@ -1,8 +1,8 @@
 #pragma once
 
-enum ITEM {
-    WOOD,
-};
+#include <string>
+#include <entt/entt.hpp>
+#include <engine/engine.hpp>
 
 enum ACTION {
     MOVE,
@@ -22,8 +22,3 @@ struct Task {
         entt::entity target;
     };
 };
-
-typedef struct ItemStack {
-    ITEM type;
-    unsigned int amount;
-} Item;

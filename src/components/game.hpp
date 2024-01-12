@@ -1,28 +1,24 @@
 #pragma once
+
+#include <vector>
+#include <entt/entt.hpp>
+#include <engine/engine.hpp>
 #include "../types.hpp"
+
+#include "../item.hpp"
 
 namespace Components {
 
-    struct Unit { };
-
-    struct Resource {
-        ITEM type;
-    };
-
-    struct Inventory {
-        std::vector<ItemStack> items;
-    };
-
-    struct Storage {
-        unsigned int amount;
-        unsigned int capacity;
-    };
+    using Equip = std::vector<Item>;
 
     typedef std::vector<Task> TaskQueue;
+
     struct TaskMoveTo : Engine::Vector2 { };
+
     struct TaskMoveToTarget {
         entt::entity target;
     };
+
     struct TaskCollectFromTarget {
         entt::entity target;
     };

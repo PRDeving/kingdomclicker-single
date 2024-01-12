@@ -11,6 +11,7 @@ struct Drawable {
     Components::Position* position;
     Components::Scale* scale;
     Components::Sprite* sprite;
+    Components::Equip* equip;
     char frame;
 };
 
@@ -20,11 +21,11 @@ namespace Systems {
         
         std::vector<Drawable> drawable;
 
-        registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation>().each([&drawable](auto entity, auto& position, auto& scale, auto& sprite, auto& animation) {
+        registry.view<Components::Position, Components::Scale, Components::Sprite, Components::Animation, Components::Equip>().each([&drawable](auto entity, auto& position, auto& scale, auto& sprite, auto& animation, auto& equip) {
             if (!(*animation.animations)[animation.current].size()) return;
 
             int frame = (*animation.animations)[animation.current][animation.frame];
-            drawable.push_back(Drawable{&position, &scale, &sprite, static_cast<char>(frame)});
+            drawable.push_back(Drawable{&position, &scale, &sprite, &equip, static_cast<char>(frame)});
         });
 
         std::sort(drawable.begin(), drawable.end(), [](Drawable a, Drawable b) {
@@ -52,6 +53,10 @@ namespace Systems {
                 for (Drawable unit : drawable) {
                     auto pos = *unit.position - *unit.scale / 2;
                     Engine::Render::draw(*unit.sprite, unit.frame, pos, *unit.scale, COLOR_WHITE);
+
+                    for (auto& item : *unit.equip) {
+                        Engine::Render::draw(item.sprite, unit.frame, pos, *unit.scale, COLOR_WHITE);
+                    }
                 }
             });
         });

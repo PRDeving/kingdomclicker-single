@@ -167,8 +167,8 @@ namespace Engine {
                 },
                     // Rectangle dest,
                 ::Rectangle{
-                    (int)position.x,
-                    (int)position.y,
+                    (int)position.x + sprite.offset.x,
+                    (int)position.y + sprite.offset.y,
                     (int)dimensions.x,
                     (int)dimensions.y
                 },

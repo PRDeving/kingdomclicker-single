@@ -36,18 +36,23 @@ namespace Scenes {
         Engine::Texture playerTexture;
         Engine::Sprite playerSprite;
 
+        Engine::Texture helmetTexture;
+        Engine::Sprite helmetSprite;
+
         std::unordered_map<std::string, std::vector<int>> animations;
 
     public:
 
         Game() :
             terrainTexture(Engine::Assets::Texture::load("../assets/terrain.png")),
-            terrainSprite(terrainTexture, Engine::Vector2{ 4.0f, 3.0f }),
+            terrainSprite(terrainTexture, { 4, 3 }),
 
             playerTexture(Engine::Assets::Texture::load("../assets/base.png")),
-            playerSprite(playerTexture, Engine::Vector2{ 4.0f, 4.0f })
-        {
+            playerSprite(playerTexture, { 4, 4 }),
 
+            helmetTexture(Engine::Assets::Texture::load("../assets/helmet.png")),
+            helmetSprite(helmetTexture, { 4, 4 }, { 0, -12 })
+        {
             animations["idle"] = std::vector<int>{0};
             animations["move_down"] = std::vector<int>{0,1,2,3};
             animations["move_up"] = std::vector<int>{4,5,6,7};
@@ -71,6 +76,11 @@ namespace Scenes {
                 auto unit = Assamblages::Unit(registry, (island.width / 2 * 32) + 15.0f * i - 60, island.height / 2 * 32);
                 registry.emplace<Components::Sprite>(unit, playerSprite);
                 registry.emplace<Components::Animation>(unit, &animations, "idle", (unsigned char)0, 200.0f);
+                registry.emplace<Components::Equip>(unit, std::vector<Item>{{
+                    1,
+                    "Test helmet",
+                    helmetSprite
+                }});
             }
         }
 

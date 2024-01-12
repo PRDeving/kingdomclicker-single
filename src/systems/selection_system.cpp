@@ -10,7 +10,7 @@ namespace Systems {
         auto view = registry.view<Components::Selected>();
         auto hovered = registry.view<Components::Hovered>();
 
-        registry.view<Components::Unit>().each([&registry, &view, &hovered, &input, action](auto entity) {
+        registry.view<Components::PlayerControled>().each([&registry, &view, &hovered, &input, action](auto entity) {
             bool isSelected = view.contains(entity);
             bool isHovered = hovered.contains(entity);
 

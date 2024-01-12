@@ -1,19 +1,22 @@
 #pragma once
-#include <engine/engine.hpp>
+
 #include <vector>
+#include <string>
+#include <unordered_map>
+#include <entt/entt.hpp>
+#include <engine/engine.hpp>
 
 namespace Components {
 
     struct Camera {};
 
-    struct Scale : Engine::Vector2 { };
-
-    // MOVEMENT RELATED
     struct Position : Engine::Vector2 { };
+    struct Scale : Engine::Vector2 { };
     struct Direction : Engine::Vector2 { };
     typedef float Speed;
 
     // INTERACTION RELATED
+    struct PlayerControled { };
     struct Hovered { };
     struct Selected { };
 
@@ -27,13 +30,6 @@ namespace Components {
 
     // PATHFINDING RELATED
     typedef std::vector<Engine::Vector2> Waypoints;
-    typedef std::vector<Engine::Vector2> Pathfinding;
-
-    // TASK RELATED
-    struct Target {
-        entt::entity entity;
-        bool onRange;
-    };
 
     // // RENDERING RELATED
     struct Sprite : Engine::Sprite {};
